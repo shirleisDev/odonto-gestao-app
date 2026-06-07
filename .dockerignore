@@ -1,0 +1,11 @@
+node_modules/
+vendor/
+.env
+.expo/
+composer.phar
+screens/
+theme.js
+App.js
+app.json
+package.json
+package-lock.json

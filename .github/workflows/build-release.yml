@@ -28,6 +28,8 @@ jobs:
 
       - name: Build APK
         id: build
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           eas build \
             --platform android \
@@ -35,7 +37,12 @@ jobs:
             --non-interactive \
             --wait \
             --json 2>/dev/null | tee build-result.json
-          BUILD_URL=$(jq -r '.[0].artifacts.buildUrl' build-result.json)
+          BUILD_URL=$(jq -r 'if type == "array" then .[0].artifacts.buildUrl else .artifacts.buildUrl end' build-result.json)
+          if [ -z "$BUILD_URL" ] || [ "$BUILD_URL" = "null" ]; then
+            echo "ERROR: Could not get build URL. Check EXPO_TOKEN secret and build logs."
+            cat build-result.json
+            exit 1
+          fi
           echo "url=$BUILD_URL" >> $GITHUB_OUTPUT
 
       - name: Download APK

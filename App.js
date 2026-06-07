@@ -1,6 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import HomeScreen from "./screens/HomeScreen";
 import AgendamentoScreen from "./screens/AgendamentoScreen";
@@ -14,6 +15,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -47,5 +49,6 @@ export default function App() {
         <Tab.Screen name="Sobre" component={SobreScreen} />
       </Tab.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }

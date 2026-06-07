@@ -10,15 +10,15 @@
     },
     "android": {
       "package": "com.shirleisdev.odontogestao",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE"
-      }
+      "versionCode": 1
     },
     "extra": {
       "eas": {
         "projectId": "252325b8-41fe-4142-9197-f056bf60e737"
       }
-    }
+    },
+    "plugins": [
+      "expo-status-bar"
+    ]
   }
 }

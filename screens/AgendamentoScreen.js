@@ -30,11 +30,17 @@ export default function AgendamentoScreen() {
 
     try {
 
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, whatsapp })
+        body: JSON.stringify({ nome, whatsapp }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeout);
 
       if (!res.ok) {
         const data = await res.json();
@@ -44,7 +50,11 @@ export default function AgendamentoScreen() {
       return true;
 
     } catch (error) {
-      Alert.alert("Erro", error.message || "Não foi possível conectar ao servidor.");
+      if (error.name === "AbortError") {
+        Alert.alert("Servidor indisponível", "O servidor demorou para responder. Tente novamente em alguns segundos.");
+      } else {
+        Alert.alert("Erro", error.message || "Não foi possível conectar ao servidor.");
+      }
       return false;
     }
   }

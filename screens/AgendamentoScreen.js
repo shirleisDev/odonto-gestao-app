@@ -10,42 +10,42 @@ import {
 } from "react-native";
 
 import { Linking } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { COLORS } from "../theme";
 
-const API_URL = "http://192.168.0.45/api.php";
+const API_URL = "http://192.168.0.45/odonto-gestao-app/index.php";
 
 export default function AgendamentoScreen() {
 
   const [nome, setNome] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
 
-  async function consultar() {
+  async function guardarLeads() {
+
+    if (!nome.trim() || !whatsapp.trim()) {
+      Alert.alert("Atenção", "Preencha seu nome e WhatsApp.");
+      return false;
+    }
 
     try {
 
-      await fetch(API_URL,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          nome,
-          whatsapp
-        })
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, whatsapp })
       });
 
-      Alert.alert(
-        "Sucesso",
-        "Dados enviados com sucesso."
-      );
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Erro ao salvar");
+      }
 
-    } catch(error){
+      return true;
 
-      Alert.alert(
-        "Erro",
-        "Não foi possível conectar ao servidor."
-      );
+    } catch (error) {
+      Alert.alert("Erro", error.message || "Não foi possível conectar ao servidor.");
+      return false;
     }
   }
 
@@ -89,21 +89,15 @@ Gostaria de agendar uma consulta.`;
       />
 
       <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={consultar}
-      >
-        <Text style={styles.buttonText}>
-          Enviar Dados
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         style={styles.whatsappButton}
-        onPress={abrirWhatsApp}
+        onPress={async () => { const ok = await guardarLeads(); if (ok) abrirWhatsApp(); }}
       >
-        <Text style={styles.buttonText}>
-          Agendar pelo WhatsApp
-        </Text>
+        <View style={styles.whatsappButtonContent}>
+          <FontAwesome name="whatsapp" size={22} color="#fff" style={{ marginRight: 8 }} />
+          <Text style={styles.buttonText}>
+            Agendar pelo WhatsApp
+          </Text>
+        </View>
       </TouchableOpacity>
 
     </ScrollView>
@@ -142,6 +136,12 @@ const styles = StyleSheet.create({
     backgroundColor:COLORS.whatsapp,
     padding:18,
     borderRadius:20
+  },
+
+  whatsappButtonContent:{
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center"
   },
 
   buttonText:{

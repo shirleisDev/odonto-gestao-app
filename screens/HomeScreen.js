@@ -32,23 +32,17 @@ export default function HomeScreen() {
 
         <View style={styles.metricCard}>
           <Text style={styles.metricNumber}>500+</Text>
-          <Text style={styles.metricText}>
-            Pacientes
-          </Text>
+          <Text style={styles.metricText} numberOfLines={1}>Pacientes</Text>
         </View>
 
         <View style={styles.metricCard}>
           <Text style={styles.metricNumber}>98%</Text>
-          <Text style={styles.metricText}>
-            Satisfação
-          </Text>
+          <Text style={styles.metricText} numberOfLines={1}>Satisfação</Text>
         </View>
 
         <View style={styles.metricCard}>
           <Text style={styles.metricNumber}>10+</Text>
-          <Text style={styles.metricText}>
-            Anos
-          </Text>
+          <Text style={styles.metricText} numberOfLines={1}>Anos</Text>
         </View>
 
       </View>
@@ -81,15 +75,18 @@ export default function HomeScreen() {
         </Text>
 
         <Text style={styles.review}>
-          ★★★★★ Atendimento excelente.
+          ★★★★★ Atendimento excelente.{"\n"}
+          <Text style={styles.reviewName}>— Mariana Oliveira</Text>
         </Text>
 
         <Text style={styles.review}>
-          ★★★★★ Profissional muito cuidadosa.
+          ★★★★★ Profissional muito cuidadosa.{"\n"}
+          <Text style={styles.reviewName}>— Carlos Eduardo Silva</Text>
         </Text>
 
         <Text style={styles.review}>
-          ★★★★★ Ambiente confortável e acolhedor.
+          ★★★★★ Ambiente confortável e acolhedor.{"\n"}
+          <Text style={styles.reviewName}>— Fernanda Costa</Text>
         </Text>
       </View>
 
@@ -146,7 +143,8 @@ const styles = StyleSheet.create({
   },
 
   metricText:{
-    marginTop:5
+    marginTop:5,
+    fontSize:12
   },
 
   card:{
@@ -173,5 +171,11 @@ const styles = StyleSheet.create({
   review:{
     marginTop:10,
     color:COLORS.subtitle
+  },
+
+  reviewName:{
+    fontSize:12,
+    fontStyle:"italic",
+    color:COLORS.primaryDark
   }
 });

@@ -65,7 +65,6 @@ export default function AgendamentoScreen() {
   }
 
   async function abrirWhatsApp() {
-
     const mensagem =
 `Olá, meu nome é ${nome}.
 Gostaria de agendar uma consulta.`;
@@ -73,11 +72,10 @@ Gostaria de agendar uma consulta.`;
     const url =
 `https://wa.me/5521979072363?text=${encodeURIComponent(mensagem)}`;
 
-    const supported =
-      await Linking.canOpenURL(url);
-
-    if(supported){
+    try {
       await Linking.openURL(url);
+    } catch {
+      Alert.alert("Erro", "Não foi possível abrir o WhatsApp.");
     }
   }
 
@@ -105,7 +103,7 @@ Gostaria de agendar uma consulta.`;
 
       <TouchableOpacity
         style={styles.whatsappButton}
-        onPress={async () => { const ok = await guardarLeads(); if (ok) abrirWhatsApp(); }}
+        onPress={async () => { const ok = await guardarLeads(); if (ok) await abrirWhatsApp(); }}
       >
         <View style={styles.whatsappButtonContent}>
           <FontAwesome name="whatsapp" size={22} color="#fff" style={{ marginRight: 8 }} />

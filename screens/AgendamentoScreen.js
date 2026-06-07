@@ -14,7 +14,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import { COLORS } from "../theme";
 
-const API_URL = "http://192.168.0.45/odonto-gestao-app/index.php";
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export default function AgendamentoScreen() {
 

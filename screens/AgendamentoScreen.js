@@ -28,6 +28,11 @@ export default function AgendamentoScreen() {
       return false;
     }
 
+    if (!API_URL) {
+      Alert.alert("Erro de configuração", "URL da API não configurada.");
+      return false;
+    }
+
     try {
 
       const controller = new AbortController();

@@ -1,58 +1,73 @@
 <?php
+// Cabeçalhos de Segurança e CORS liberados para a rede local
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-require_once __DIR__ . '/vendor/autoload.php';
-
-if (file_exists(__DIR__ . '/.env')) {
-    Dotenv\Dotenv::createImmutable(__DIR__)->load();
-}
-
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
+// Se for uma requisição de teste (OPTIONS) do Expo, responde 200 e sai
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
+    http_response_code(200);
+    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed']);
-    exit;
+
+// Tenta incluir os arquivos tratando caminhos relativos de forma limpa
+if (file_exists(__DIR__ . '/classes/Procedimento.php')) {
+    require_once __DIR__ . '/classes/Procedimento.php';
+    require_once __DIR__ . '/classes/LeadRepository.php';
+} else {
+    // Caso os arquivos estejam direto na raiz do projeto e não na pasta classes
+    require_once __DIR__ . '/Procedimento.php';
+    require_once __DIR__ . '/LeadRepository.php';
 }
 
-$raw = file_get_contents('php://input');
-$body = json_decode($raw, true);
 
-if (json_last_error() !== JSON_ERROR_NONE) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid JSON: ' . json_last_error_msg()]);
-    exit;
-}
-
-if (empty($body['nome']) || empty($body['whatsapp'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'nome and whatsapp are required']);
-    exit;
-}
+define("NOME_CLINICA", "Dra. Josiane - Odontologia");
 
 try {
-    $client     = new MongoDB\Client($_ENV['MONGODB_URI']);
-    $collection = $client->{$_ENV['MONGODB_DB']}->{$_ENV['MONGODB_COLLECTION']};
+    // Captura e decodifica o payload JSON vindo do React Native / Expo
+    $jsonBruto = file_get_contents("php://input");
+    $requisicao = json_decode($jsonBruto, true);
 
-    $result = $collection->insertOne([
-        'nome'      => $body['nome'],
-        'whatsapp'  => $body['whatsapp'],
-        'createdAt' => new MongoDB\BSON\UTCDateTime(),
-    ]);
+    // Validação se os campos obrigatórios foram preenchidos
+    if (empty($requisicao['nome_paciente']) || empty($requisicao['whatsapp']) || empty($requisicao['data_escolhida'])) {
+        http_response_code(400);
+        echo json_encode(["erro" => "Bad Request: Todos os campos são obrigatórios."]);
+        exit();
+    }
 
-    http_response_code(201);
+    // Instanciação das classes (POO)
+    $procedimento = new Procedimento();
+    $repositorio = new LeadRepository();
+
+    // Salva os dados diretamente na nova tabela do phpMyAdmin
+    $repositorio->salvar(
+        $requisicao['nome_paciente'], 
+        $requisicao['whatsapp'], 
+        $requisicao['data_escolhida']
+    );
+
+    // Resposta estruturada devolvida com sucesso ao React Native
+    http_response_code(200);
     echo json_encode([
-        'success' => true,
-        'id'      => (string) $result->getInsertedId(),
+        "status" => "Agendamento realizado com sucesso!",
+        "procedimento" => $procedimento->getNome(),
+        "valor" => $procedimento->getValor(),
+        "parcelas" => $procedimento->getParcelas(),
+        "valor_parcela" => $procedimento->getValorParcela(),
+        "clinica" => NOME_CLINICA,
+        "timestamp" => time()
     ]);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+
+}
+
+ catch (Exception $e) {
+    // CAPRICHO TÉCNICO: Impede que o PHP jogue HTML na tela e quebre o Expo
+    http_response_code(200); // Força um status OK para o Expo conseguir ler
+    echo json_encode([
+        "erro" => "Erro interno no servidor PHP",
+        "mensagem" => $e->getMessage()
+    ]);
+    exit();
 }

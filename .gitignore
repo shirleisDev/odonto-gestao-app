@@ -31,12 +31,7 @@ yarn-error.*
 *.pem
 
 # local env files
-.env
 .env*.local
-
-# PHP / Composer
-vendor/
-composer.phar
 
 # typescript
 *.tsbuildinfo

@@ -1,14 +1,13 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StatusBar } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import HomeScreen from "./screens/HomeScreen";
+import AgendamentoScreen from "./screens/AgendamentoScreen";
 import LocalizacaoScreen from "./screens/LocalizacaoScreen";
 import SobreScreen from "./screens/SobreScreen";
-import TelaAgendamento from "./components/TelaAgendamento";
-
-// IMPORTANTE: Aqui carregamos a nossa nova tela inteligente que criamos juntos!
 
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "./theme";
@@ -17,18 +16,16 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <SafeAreaProvider>
     <NavigationContainer>
-      {/* Configura a cor da barra de bateria/hora do celular no topo */}
-      <StatusBar barStyle="dark-content" backgroundColor="#f5f5f5" />
-
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: "#999",
           tabBarStyle: {
-            height: 65,
-            paddingBottom: 10
+            height: 65
           },
           tabBarIcon: ({ color, size }) => {
             let icon;
@@ -49,13 +46,12 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Início" component={HomeScreen} />
-        
-        {/* Aqui injetamos a nossa tela nova na aba de Agendamento do menu principal */}
-        <Tab.Screen name="Agendar" component={TelaAgendamento} />
-        
+        <Tab.Screen name="Agendar" component={AgendamentoScreen} />
         <Tab.Screen name="Localização" component={LocalizacaoScreen} />
         <Tab.Screen name="Sobre" component={SobreScreen} />
       </Tab.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

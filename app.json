@@ -1,24 +1,24 @@
 {
   "expo": {
-    "name": "frontend-mobile",
+    "name": "Odonto Gestão",
     "slug": "frontend-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+      "package": "com.shirleisdev.odontogestao",
+      "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "252325b8-41fe-4142-9197-f056bf60e737"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      "expo-status-bar"
+    ]
   }
 }

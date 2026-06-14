@@ -16,7 +16,12 @@ class Lead {
     #[ODM\Field(type: "string")]
     private string $whatsapp;
 
+    #[ODM\Field(type: "date")]
+    private ?\DateTime $dataConsulta = null;
 
-    public function setNome(string $nome): void        { $this->nome = $nome; }
-    public function setWhatsapp(string $w): void       { $this->whatsapp = $w; }
+
+    public function setNome(string $nome): void                    { $this->nome = $nome; }
+    public function setWhatsapp(string $w): void                   { $this->whatsapp = $w; }
+    public function setDataConsulta(\DateTime $d): void            { $this->dataConsulta = $d; }
+    public function getDataConsulta(): ?\DateTime                  { return $this->dataConsulta; }
 }

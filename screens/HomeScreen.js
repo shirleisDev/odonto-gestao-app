@@ -7,16 +7,19 @@ import {
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-import { COLORS } from "../theme";
+import { useTheme } from "../theme";
 
 export default function HomeScreen() {
+  const colors = useTheme();
+  const styles = getStyles(colors);
+
   return (
     <ScrollView
       style={styles.container}
       showsVerticalScrollIndicator={false}
     >
       <LinearGradient
-        colors={[COLORS.primary, COLORS.primaryDark]}
+        colors={[colors.primary, colors.primaryDark]}
         style={styles.hero}
       >
         <Text style={styles.heroTitle}>
@@ -94,88 +97,91 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    backgroundColor:COLORS.background
-  },
+function getStyles(colors) {
+  return StyleSheet.create({
+    container:{
+      flex:1,
+      backgroundColor:colors.background
+    },
 
-  hero:{
-    paddingTop:70,
-    paddingBottom:50,
-    paddingHorizontal:25,
-    borderBottomLeftRadius:35,
-    borderBottomRightRadius:35
-  },
+    hero:{
+      paddingTop:70,
+      paddingBottom:50,
+      paddingHorizontal:25,
+      borderBottomLeftRadius:35,
+      borderBottomRightRadius:35
+    },
 
-  heroTitle:{
-    fontSize:32,
-    fontWeight:"bold",
-    color:"#fff"
-  },
+    heroTitle:{
+      fontSize:32,
+      fontWeight:"bold",
+      color:"#fff"
+    },
 
-  heroSubtitle:{
-    marginTop:10,
-    color:"#fff",
-    fontSize:16,
-    lineHeight:24
-  },
+    heroSubtitle:{
+      marginTop:10,
+      color:"#fff",
+      fontSize:16,
+      lineHeight:24
+    },
 
-  metricsContainer:{
-    flexDirection:"row",
-    justifyContent:"space-between",
-    margin:20
-  },
+    metricsContainer:{
+      flexDirection:"row",
+      justifyContent:"space-between",
+      margin:20
+    },
 
-  metricCard:{
-    backgroundColor:"#fff",
-    width:"31%",
-    padding:15,
-    borderRadius:20,
-    alignItems:"center",
-    elevation:3
-  },
+    metricCard:{
+      backgroundColor:colors.card,
+      width:"31%",
+      padding:15,
+      borderRadius:20,
+      alignItems:"center",
+      elevation:3
+    },
 
-  metricNumber:{
-    fontSize:20,
-    fontWeight:"bold",
-    color:COLORS.primaryDark
-  },
+    metricNumber:{
+      fontSize:20,
+      fontWeight:"bold",
+      color:colors.primaryDark
+    },
 
-  metricText:{
-    marginTop:5,
-    fontSize:12
-  },
+    metricText:{
+      marginTop:5,
+      fontSize:12,
+      color:colors.subtitle
+    },
 
-  card:{
-    backgroundColor:"#fff",
-    marginHorizontal:20,
-    marginBottom:15,
-    padding:20,
-    borderRadius:25,
-    elevation:2
-  },
+    card:{
+      backgroundColor:colors.card,
+      marginHorizontal:20,
+      marginBottom:15,
+      padding:20,
+      borderRadius:25,
+      elevation:2
+    },
 
-  cardTitle:{
-    fontSize:18,
-    fontWeight:"bold",
-    color:COLORS.text
-  },
+    cardTitle:{
+      fontSize:18,
+      fontWeight:"bold",
+      color:colors.text
+    },
 
-  cardText:{
-    marginTop:10,
-    lineHeight:22,
-    color:COLORS.subtitle
-  },
+    cardText:{
+      marginTop:10,
+      lineHeight:22,
+      color:colors.subtitle
+    },
 
-  review:{
-    marginTop:10,
-    color:COLORS.subtitle
-  },
+    review:{
+      marginTop:10,
+      color:colors.subtitle
+    },
 
-  reviewName:{
-    fontSize:12,
-    fontStyle:"italic",
-    color:COLORS.primaryDark
-  }
-});
+    reviewName:{
+      fontSize:12,
+      fontStyle:"italic",
+      color:colors.primaryDark
+    }
+  });
+}

@@ -6,9 +6,12 @@ import {
   StyleSheet
 } from "react-native";
 
-import { COLORS } from "../theme";
+import { useTheme } from "../theme";
 
 export default function SobreScreen() {
+  const colors = useTheme();
+  const styles = getStyles(colors);
+
   return (
     <ScrollView
       style={styles.container}
@@ -71,47 +74,50 @@ export default function SobreScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background
-  },
+function getStyles(colors) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background
+    },
 
-  header: {
-    padding: 25,
-    alignItems: "center"
-  },
+    header: {
+      padding: 25,
+      alignItems: "center"
+    },
 
-  nome: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: COLORS.text
-  },
+    nome: {
+      fontSize: 28,
+      fontWeight: "bold",
+      marginTop: 40,
+      color: colors.text
+    },
 
-  profissao: {
-    marginTop: 8,
-    fontSize: 16,
-    color: COLORS.subtitle
-  },
+    profissao: {
+      marginTop: 8,
+      fontSize: 16,
+      color: colors.subtitle
+    },
 
-  card: {
-    backgroundColor: "#fff",
-    marginHorizontal: 20,
-    marginBottom: 15,
-    padding: 20,
-    borderRadius: 25,
-    elevation: 3
-  },
+    card: {
+      backgroundColor: colors.card,
+      marginHorizontal: 20,
+      marginBottom: 15,
+      padding: 20,
+      borderRadius: 25,
+      elevation: 3
+    },
 
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: COLORS.text,
-    marginBottom: 10
-  },
+    cardTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 10
+    },
 
-  cardText: {
-    color: COLORS.subtitle,
-    lineHeight: 24
-  }
-});
+    cardText: {
+      color: colors.subtitle,
+      lineHeight: 24
+    }
+  });
+}

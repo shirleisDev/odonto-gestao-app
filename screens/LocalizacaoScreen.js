@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-import { COLORS } from "../theme";
+import { useTheme } from "../theme";
 
 const ENDERECO = "R. Domingos Lopes, 671 - Store G - Madureira";
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ENDERECO)}`;
@@ -19,6 +19,9 @@ function abrirMaps() {
 }
 
 export default function LocalizacaoScreen() {
+  const colors = useTheme();
+  const styles = getStyles(colors);
+
   return (
     <ScrollView
       style={styles.container}
@@ -26,7 +29,7 @@ export default function LocalizacaoScreen() {
     >
       <TouchableOpacity onPress={abrirMaps} activeOpacity={0.85}>
         <LinearGradient
-          colors={[COLORS.primary, COLORS.primaryDark]}
+          colors={[colors.primary, colors.primaryDark]}
           style={styles.banner}
         >
           <Text style={styles.bannerPin}>📍</Text>
@@ -55,80 +58,82 @@ export default function LocalizacaoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background
-  },
+function getStyles(colors) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background
+    },
 
-  banner: {
-    paddingTop: 60,
-    paddingBottom: 40,
-    paddingHorizontal: 25,
-    borderBottomLeftRadius: 35,
-    borderBottomRightRadius: 35,
-    alignItems: "center"
-  },
+    banner: {
+      paddingTop: 60,
+      paddingBottom: 40,
+      paddingHorizontal: 25,
+      borderBottomLeftRadius: 35,
+      borderBottomRightRadius: 35,
+      alignItems: "center"
+    },
 
-  bannerPin: {
-    fontSize: 48,
-    marginBottom: 10
-  },
+    bannerPin: {
+      fontSize: 48,
+      marginBottom: 10
+    },
 
-  bannerTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#fff"
-  },
+    bannerTitle: {
+      fontSize: 28,
+      fontWeight: "bold",
+      color: "#fff"
+    },
 
-  bannerAddress: {
-    marginTop: 8,
-    color: "#fff",
-    fontSize: 15,
-    textAlign: "center",
-    lineHeight: 22,
-    opacity: 0.9
-  },
+    bannerAddress: {
+      marginTop: 8,
+      color: "#fff",
+      fontSize: 15,
+      textAlign: "center",
+      lineHeight: 22,
+      opacity: 0.9
+    },
 
-  bannerButton: {
-    marginTop: 24,
-    backgroundColor: "#fff",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25
-  },
+    bannerButton: {
+      marginTop: 24,
+      backgroundColor: "#fff",
+      paddingVertical: 12,
+      paddingHorizontal: 30,
+      borderRadius: 25
+    },
 
-  bannerButtonText: {
-    color: COLORS.primaryDark,
-    fontWeight: "bold",
-    fontSize: 15
-  },
+    bannerButtonText: {
+      color: colors.primaryDark,
+      fontWeight: "bold",
+      fontSize: 15
+    },
 
-  card: {
-    backgroundColor: "#fff",
-    marginHorizontal: 20,
-    marginTop: 20,
-    padding: 20,
-    borderRadius: 25,
-    elevation: 2
-  },
+    card: {
+      backgroundColor: colors.card,
+      marginHorizontal: 20,
+      marginTop: 20,
+      padding: 20,
+      borderRadius: 25,
+      elevation: 2
+    },
 
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: COLORS.text,
-    marginBottom: 12
-  },
+    cardTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 12
+    },
 
-  cardRow: {
-    color: COLORS.subtitle,
-    fontSize: 14,
-    marginBottom: 6,
-    lineHeight: 20
-  },
+    cardRow: {
+      color: colors.subtitle,
+      fontSize: 14,
+      marginBottom: 6,
+      lineHeight: 20
+    },
 
-  cardText: {
-    color: COLORS.subtitle,
-    lineHeight: 22
-  }
-});
+    cardText: {
+      color: colors.subtitle,
+      lineHeight: 22
+    }
+  });
+}

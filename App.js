@@ -1,4 +1,5 @@
 import React from "react";
+import { useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -10,11 +11,14 @@ import LocalizacaoScreen from "./screens/LocalizacaoScreen";
 import SobreScreen from "./screens/SobreScreen";
 
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS } from "./theme";
+import { LIGHT_COLORS, DARK_COLORS } from "./theme";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const scheme = useColorScheme();
+  const colors = scheme === "dark" ? DARK_COLORS : LIGHT_COLORS;
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
     <SafeAreaProvider>
@@ -22,10 +26,12 @@ export default function App() {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,
-          tabBarActiveTintColor: COLORS.primary,
-          tabBarInactiveTintColor: "#999",
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: colors.subtitle,
           tabBarStyle: {
-            height: 65
+            height: 65,
+            backgroundColor: colors.card,
+            borderTopColor: colors.border,
           },
           tabBarIcon: ({ color, size }) => {
             let icon;
